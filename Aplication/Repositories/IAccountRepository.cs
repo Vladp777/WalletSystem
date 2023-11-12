@@ -5,10 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Repositories
-{
-    internal interface IAccountRepository: IBaseRepository<Account>
-    {
+namespace Application.Repositories;
 
-    }
+public interface IAccountRepository: IBaseRepository<Account>
+{
+
 }
