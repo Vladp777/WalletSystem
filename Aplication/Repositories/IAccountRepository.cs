@@ -7,14 +7,8 @@ using System.Threading.Tasks;
 
 namespace Application.Repositories
 {
-    internal interface IAccountRepository
+    internal interface IAccountRepository: IBaseRepository<Account>
     {
-        Task<Account> CreateAccount(Account account);
-        Task<Account> DeleteAccount(Account account);
-        Task<IEnumerable<Account>> GetAllUserAccounts();
-        Task<IEnumerable<Account>> GetAccountById(Guid id);
-        Task<Account> ChangeBalance(Guid id);
-        Task<Account> ChangeName(Guid id);
 
     }
 }
