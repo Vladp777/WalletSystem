@@ -14,7 +14,7 @@ namespace Application.Accounts.CommandHandlers
             _context = context;
         }
 
-        public async Task<Account> Handle(CreateAccount request)
+        public Task<Account> Handle(CreateAccount request, CancellationToken cancellationToken)
         {
             var entity = new Account()
             {
@@ -24,7 +24,7 @@ namespace Application.Accounts.CommandHandlers
                 Balance = request.Balance
             };
 
-            return await _context.Create(entity);
+            return _context.Create(entity);
         }
     }
 }

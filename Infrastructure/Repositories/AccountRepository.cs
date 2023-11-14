@@ -1,7 +1,6 @@
 ﻿using Application.Repositories;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace Infrastructure.Repositories;
 
