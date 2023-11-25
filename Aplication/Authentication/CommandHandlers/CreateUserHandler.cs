@@ -1,7 +1,8 @@
 ﻿using Application.Authentication.Commands;
+using Application.Interfaces;
+using Application.Models;
 using Domain.Entities;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,16 +11,18 @@ using System.Threading.Tasks;
 
 namespace Application.Authentication.CommandHandlers;
 
-public class CreateUserHandler : IRequestHandler<CreateUserCommand, ApplicationUser>
+public class CreateUserHandler : IRequestHandler<CreateUserCommand, AuthenticationResult>
 {
-    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IIdentityService _identityService;
 
-    public CreateUserHandler(UserManager<ApplicationUser> userManager)
+    public CreateUserHandler(IIdentityService identityService)
     {
-        _userManager = userManager;
+        _identityService = identityService;
     }
-    public async Task<ApplicationUser> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+    public async Task<AuthenticationResult> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        
+        var response = await _identityService.RegisterUser(request.Email, request.UserName, request.Password);
+
+        return response;
     }
 }

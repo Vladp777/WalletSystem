@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Application.Models;
 
-public class CreateUserResponse
+public class AuthSuccesResponse
 {
-
+    public string Id { get; set; }
+    public string Token { get; set; }
 }

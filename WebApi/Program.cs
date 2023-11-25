@@ -8,16 +8,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-var connectionString = builder.Configuration.GetConnectionString("Default");
-
 builder.Services
     .ConfigureApplication()
-    .ConfigureInfrastructure(connectionString);
+    .ConfigureInfrastructure(builder.Configuration);
     
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAuthentication();
 
 var app = builder.Build();
 

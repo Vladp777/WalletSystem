@@ -9,6 +9,5 @@ namespace Application.Repositories;
 
 public interface IAccountRepository: IBaseRepository<Account>
 {
-    Task<bool> IsUserOwnsAccount(Guid accountId, string userId);
 
 }
