@@ -11,9 +11,9 @@ public class Transaction: BaseEntity
     public Account Account { get; set; } = null!;
 
     public TransactionType Type { get; set; }
-    public string Description { get; set; } = null!;
+    public string Description { get; set; }
     public double Count {  get; set; }
     public DateTime DateTime { get; set; }
     public double Result_Balance {  get; set; }
-    public TransactionTag Tag { get;  }
+    public TransactionTag Tag { get; set; }
 }

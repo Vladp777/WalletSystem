@@ -23,7 +23,7 @@ public class AccountRepository : IAccountRepository
         return entity;
     }
 
-    public async Task<Account?> Delete(Guid Id)
+    public async Task<Account> Delete(Guid Id)
     {
         var deleted = _context.Accounts.FirstOrDefault(x => x.Id == Id);
 
@@ -37,21 +37,21 @@ public class AccountRepository : IAccountRepository
         return deleted;
     }
 
-    public Task<Account?> Get(Guid id)
+    public Task<Account> Get(Guid id)
     {
         var result = _context.Accounts.Include(a => a.Transactions).FirstOrDefault(x => x.Id == id);
         
         return Task.FromResult(result);
     }
 
-    public Task<IEnumerable<Account>> GetAll(Guid id)
+    public Task<IEnumerable<Account>> GetAll(Guid userId)
     {
-        IEnumerable<Account> results = _context.Accounts.Include(a => a.Transactions).Where(x => x.ApplicationUserId == id);
+        IEnumerable<Account> results = _context.Accounts.Include(a => a.Transactions).Where(x => x.ApplicationUserId == userId);
 
         return Task.FromResult(results);
     }
 
-    public async Task<Account?> Update(Account entity)
+    public async Task<Account> Update(Account entity)
     {
         var updatedEntity = _context.Accounts.FirstOrDefault(x => x.Id == entity.Id);
 

@@ -1,4 +1,6 @@
-﻿using Application.Repositories;
+﻿using Application.Interfaces;
+using Application.Repositories;
+using Infrastructure.Identity;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -8,13 +10,15 @@ namespace Infrastructure
 {
     public static class ServiceExtentions
     {
-        public static void ConfigureInfrastructure(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection ConfigureInfrastructure(this IServiceCollection services, string connectionString)
         {
-            var connectionString = configuration.GetConnectionString("Default");
             services.AddDbContext<ApplicationDbContext>(opt => opt.UseSqlServer(connectionString));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<IIdentityService, IdentityService>();
+
+            return services;
         }
     }
 }

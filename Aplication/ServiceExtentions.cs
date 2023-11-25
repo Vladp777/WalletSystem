@@ -3,7 +3,7 @@
 namespace Application;
 public static class DependencyInjection
 {
-    public static void ConfigureApplication(this IServiceCollection services)
+    public static IServiceCollection ConfigureApplication(this IServiceCollection services)
     {
         //services.AddAutoMapper(Assembly.GetExecutingAssembly());
         //services.AddMediatR(Assembly.GetExecutingAssembly());
@@ -13,5 +13,7 @@ public static class DependencyInjection
 
         services.AddMediatR(configuration =>
             configuration.RegisterServicesFromAssembly(assembly));
+
+        return services;
     }
 }
