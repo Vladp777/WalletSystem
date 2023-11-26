@@ -1,4 +1,5 @@
 ﻿using Application.Models;
+using ErrorOr;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -10,4 +11,4 @@ namespace Application.Authentication.Queries;
 
 public record LoginUserQuery(
     string Email, 
-    string Password): IRequest<AuthenticationResult>;
+    string Password): IRequest<ErrorOr<AuthenticationResult>>;

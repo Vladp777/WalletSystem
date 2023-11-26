@@ -2,6 +2,7 @@
 using Application.Interfaces;
 using Application.Models;
 using Domain.Entities;
+using ErrorOr;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Application.Authentication.CommandHandlers;
 
-public class CreateUserHandler : IRequestHandler<CreateUserCommand, AuthenticationResult>
+public class CreateUserHandler : IRequestHandler<CreateUserCommand, ErrorOr<AuthenticationResult>>
 {
     private readonly IIdentityService _identityService;
 
@@ -19,9 +20,10 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, Authenticati
     {
         _identityService = identityService;
     }
-    public async Task<AuthenticationResult> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+
+    async Task<ErrorOr<AuthenticationResult>> IRequestHandler<CreateUserCommand, ErrorOr<AuthenticationResult>>.Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        var response = await _identityService.RegisterUser(request.Email, request.UserName, request.Password);
+        var response = await _identityService.RegisterUser(request.Email, request.Name, request.Password);
 
         return response;
     }

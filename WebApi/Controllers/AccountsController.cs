@@ -8,10 +8,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebApi.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
 [Authorize]
-public class AccountsController : ControllerBase
+[Route("api/[controller]")]
+public class AccountsController : ApiController
 {
     private readonly ISender _mediatr;
 
@@ -51,7 +50,7 @@ public class AccountsController : ControllerBase
     public async Task<IActionResult> Create([FromBody] CreateAccount command)
     {
         var result = await _mediatr.Send(command);
-
+        
         if (result == null)
         {
             return BadRequest();

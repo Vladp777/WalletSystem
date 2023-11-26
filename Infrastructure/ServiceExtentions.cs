@@ -29,7 +29,7 @@ namespace Infrastructure
 
             var jwtSettings = new JwtSettings
             {
-                Secret = configuration.GetSection("JwtSettings").GetSection("Secret").ToString()!
+                Secret = configuration["JwtSettings:Secret"]!
             };
 
             services.AddSingleton(jwtSettings);
@@ -49,6 +49,9 @@ namespace Infrastructure
                     };
                 });
 
+            
+
+            services.AddAuthorization();
             
 
             return services;
