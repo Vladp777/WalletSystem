@@ -1,6 +1,8 @@
 ﻿using Application.Authentication.Commands;
+using Application.Authentication.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -24,10 +26,37 @@ namespace WebApi.Controllers
 
             if (!result.Succeeded)
             {
-                return BadRequest(result);
+                return BadRequest(new AuthFailResponse
+                {
+                    Errors = result.Errors
+                });
             }
 
-            return Ok(result);
+            return Ok(new AuthSuccesResponse
+            {
+                Id = result.UserId,
+                Token = result.Token
+            });
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginUserQuery query)
+        {
+            var result = await _mediatr.Send(query);
+
+            if (!result.Succeeded)
+            {
+                return BadRequest(new AuthFailResponse
+                {
+                    Errors = result.Errors
+                });
+            }
+
+            return Ok(new AuthSuccesResponse
+            {
+                Id = result.UserId,
+                Token = result.Token
+            });
         }
     }
 }

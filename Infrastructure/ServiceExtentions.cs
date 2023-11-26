@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Application.Repositories;
+using Domain.Entities;
 using Infrastructure.Identity;
 using Infrastructure.Options;
 using Infrastructure.Repositories;
@@ -16,7 +17,15 @@ namespace Infrastructure
     {
         public static IServiceCollection ConfigureInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<ApplicationDbContext>(opt => opt.UseSqlServer(configuration.GetConnectionString("Default")));
+            services.AddDbContext<ApplicationDbContext>(opt => 
+                opt.UseSqlServer(configuration.GetConnectionString("Default")));
+
+            services.AddDefaultIdentity<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<IIdentityService, IdentityService>();
 
             var jwtSettings = new JwtSettings
             {
@@ -40,9 +49,7 @@ namespace Infrastructure
                     };
                 });
 
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IAccountRepository, AccountRepository>();
-            services.AddScoped<IIdentityService, IdentityService>();
+            
 
             return services;
         }

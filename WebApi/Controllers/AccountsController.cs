@@ -1,58 +1,68 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Application.Repositories;
-using Domain.Entities;
+using MediatR;
+using Application.Accounts.Queries;
+using Application.Accounts.Commands;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace WebApi.Controllers
+namespace WebApi.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class AccountsController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AccountsController : ControllerBase
+    private readonly ISender _mediatr;
+
+    public AccountsController(ISender mediatr)
     {
-        private readonly IAccountRepository _accountRepository;
-        private readonly IUnitOfWork _unitOfWork;
+        _mediatr = mediatr;
+    }
 
-        public AccountsController(IAccountRepository accountRepository, IUnitOfWork unitOfWork)
-        {
-            _accountRepository = accountRepository;
-            _unitOfWork = unitOfWork;
-        }
-        // GET: api/<AccountsController>
-        [HttpGet("{userId}")]
-        public IActionResult GetAll(Guid userId)
-        {
-            var result = _accountRepository.GetAll(userId).Result;
-            if (result == null)
-            {
-                return NoContent();
-            }
-            return Ok(result);
-        }
+    //[HttpGet("{userId}")]
+    //public async Task<IActionResult> GetAll(GetAllAccounts request)
+    //{
+    //    var result =  await _mediatr.Send(request);
+    //    if (result == null)
+    //    {
+    //        return NoContent();
+    //    }
+    //    return Ok(result);
+    //}
 
-        // GET api/<AccountsController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+    [HttpGet("{id}")]
+    public async Task<IActionResult> Get(GetAccountById request)
+    {
+        var result = await _mediatr.Send(request);
+        if (result == null)
         {
-            return "value";
+            return NoContent();
         }
+        return Ok(result);
+    }
 
-        // POST api/<AccountsController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
+    // POST api/<AccountsController>
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] CreateAccount command)
+    {
+        var result = await _mediatr.Send(command);
 
-        // PUT api/<AccountsController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        if (result == null)
         {
+            return BadRequest();
         }
 
-        // DELETE api/<AccountsController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        return Created($"api/accounts/{result.Id}", result);
+    }
+
+    // PUT api/<AccountsController>/5
+    [HttpPut("{id}")]
+    public void Put(int id, [FromBody] string value)
+    {
+    }
+
+    // DELETE api/<AccountsController>/5
+    [HttpDelete("{id}")]
+    public void Delete(int id)
+    {
     }
 }

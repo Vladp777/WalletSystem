@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Infrastructure.Options;
 
-namespace Infrastructure.Options
+public class JwtSettings
 {
-    internal class JwtSettings
-    {
-        public string Secret {  get; set; }
-    }
+    public string Secret {  get; set; }
 }

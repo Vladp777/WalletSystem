@@ -8,13 +8,15 @@ namespace Application.Accounts.CommandHandlers
     public class CreateAccountHandler : IRequestHandler<CreateAccount, Account>
     {
         private readonly IAccountRepository _context;
+        private readonly IUnitOfWork _unitOfWork;
 
         public CreateAccountHandler(IAccountRepository context, IUnitOfWork unitOfWork)
         {
             _context = context;
+            _unitOfWork = unitOfWork;
         }
 
-        public Task<Account> Handle(CreateAccount request, CancellationToken cancellationToken)
+        public async Task<Account> Handle(CreateAccount request, CancellationToken cancellationToken)
         {
             var entity = new Account()
             {
@@ -24,7 +26,11 @@ namespace Application.Accounts.CommandHandlers
                 Balance = request.Balance
             };
 
-            return _context.Create(entity);
+            var result = await _context.Create(entity);
+
+            await _unitOfWork.SaveAsync();
+
+            return result;
         }
     }
 }

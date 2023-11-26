@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Models
+namespace WebApi.Models
 {
     internal class AuthFailResponse
     {
-        public List<IdentityError> Errors { get; set; }
+        public IEnumerable<IdentityError> Errors { get; set; }
     }
 }

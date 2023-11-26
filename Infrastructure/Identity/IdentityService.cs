@@ -12,7 +12,7 @@ using System.Security.Claims;
 
 namespace Infrastructure.Identity;
 
-internal class IdentityService: IIdentityService
+public class IdentityService: IIdentityService
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly JwtSettings _jwtSettings;

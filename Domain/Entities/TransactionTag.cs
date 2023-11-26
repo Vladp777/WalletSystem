@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Repositories;
+namespace Domain.Entities;
 
-public interface IUnitOfWork: IDisposable
+public class TransactionTag
 {
-    Task SaveAsync();
+    public int Id { get; set; }
+    public string Tag { get; set; }
 }
