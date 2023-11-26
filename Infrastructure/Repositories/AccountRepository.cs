@@ -46,7 +46,7 @@ public class AccountRepository : IAccountRepository
 
     public Task<IEnumerable<Account>> GetAll(Guid userId)
     {
-        IEnumerable<Account> results = _context.Accounts.Include(a => a.Transactions).Where(x => x.ApplicationUserId == userId);
+        IEnumerable<Account> results = _context.Accounts.Include(a => a.Transactions).Where(x => x.UserId == userId.ToString());
 
         return Task.FromResult(results);
     }

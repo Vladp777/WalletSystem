@@ -10,9 +10,9 @@ public class Account: BaseEntity
         Transactions = new List<Transaction>();
     }
 
-    public Guid ApplicationUserId { get; set; }
+    public string UserId { get; set; }
     [JsonIgnore]
-    public ApplicationUser ApplicationUser { get; set; } = null!;
+    public ApplicationUser User { get; set; } = null!;
     public double Balance {  get; set; }
     public string Name { get; set; } = null!;
     public List<Transaction> Transactions { get; set; }

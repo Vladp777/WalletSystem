@@ -8,5 +8,6 @@ public class ApplicationUser: IdentityUser
     {
         Accounts = new List<Account> { };
     }
+    public string Name {  get; set; }
     public List<Account> Accounts {  get; set; }
 }

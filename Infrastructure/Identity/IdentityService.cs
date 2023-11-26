@@ -29,25 +29,27 @@ public class IdentityService: IIdentityService
 
         if (existingUser != null)
         {
-            return (AuthenticationResult)IdentityResult.Failed(
-                new IdentityError
-                {
-                    Code = "Conflict",
-                    Description = "Email is already in use"
-                });
+            return new AuthenticationResult(
+                IdentityResult.Failed(
+                    new IdentityError
+                    {
+                        Code = "Conflict",
+                        Description = "Email is already in use"
+                    })
+                );
         }
 
         var newUser = new ApplicationUser
         {
             Email = email,
-            UserName = userName
+            Name = userName
         };
 
         var createdUser = await _userManager.CreateAsync(newUser, password);
 
         if (!createdUser.Succeeded)
         {
-            return (AuthenticationResult)createdUser;
+            return new AuthenticationResult(createdUser);
         }
 
         return GenerateAuthResultWithToken(newUser);
@@ -59,24 +61,28 @@ public class IdentityService: IIdentityService
 
         if (user == null)
         {
-            return (AuthenticationResult)IdentityResult.Failed(
-                new IdentityError
-                {
-                    Code = HttpStatusCode.NotFound.ToString(),
-                    Description = "Email is already in use"
-                });
+            return new AuthenticationResult(
+                IdentityResult.Failed(
+                    new IdentityError
+                    {
+                        Code = "Unauthorized",
+                        Description = "Invalid email or password"
+                    })
+                );
         }
 
         var isUserHasValidPassword = await _userManager.CheckPasswordAsync(user, password);
 
         if (!isUserHasValidPassword)
         {
-            return (AuthenticationResult)IdentityResult.Failed(
-                new IdentityError
-                {
-                    Code = "Unauthorized",
-                    Description = "Invalid email or password"
-                });
+            return new AuthenticationResult(
+                    IdentityResult.Failed(
+                    new IdentityError
+                    {
+                        Code = "Unauthorized",
+                        Description = "Invalid email or password"
+                    })
+                );
         }
 
         return GenerateAuthResultWithToken(user);

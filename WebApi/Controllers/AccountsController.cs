@@ -2,6 +2,7 @@
 using MediatR;
 using Application.Accounts.Queries;
 using Application.Accounts.Commands;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -9,6 +10,7 @@ namespace WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class AccountsController : ControllerBase
 {
     private readonly ISender _mediatr;
@@ -18,20 +20,24 @@ public class AccountsController : ControllerBase
         _mediatr = mediatr;
     }
 
-    //[HttpGet("{userId}")]
-    //public async Task<IActionResult> GetAll(GetAllAccounts request)
-    //{
-    //    var result =  await _mediatr.Send(request);
-    //    if (result == null)
-    //    {
-    //        return NoContent();
-    //    }
-    //    return Ok(result);
-    //}
+    [HttpGet("getAll/{userId}")]
+    public async Task<IActionResult> GetAll(Guid userId)
+    {
+        var request = new GetAllAccounts(userId);
+
+        var result = await _mediatr.Send(request);
+        if (result == null)
+        {
+            return NoContent();
+        }
+        return Ok(result);
+    }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> Get(GetAccountById request)
+    public async Task<IActionResult> Get(Guid id)
     {
+        var request = new GetAccountById(id);
+
         var result = await _mediatr.Send(request);
         if (result == null)
         {
