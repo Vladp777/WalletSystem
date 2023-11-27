@@ -60,14 +60,14 @@ public class IdentityService: IIdentityService
 
         if (user == null)
         {
-            return Errors.User.InvalidEmailPassword;
+            return Errors.User.InvalidEmailOrPassword;
         }
 
         var isUserHasValidPassword = await _userManager.CheckPasswordAsync(user, password);
 
         if (!isUserHasValidPassword)
         {
-            return Errors.User.InvalidEmailPassword;
+            return Errors.User.InvalidEmailOrPassword;
         }
 
         return GenerateAuthResultWithToken(user);
@@ -84,7 +84,7 @@ public class IdentityService: IIdentityService
                 new Claim(JwtRegisteredClaimNames.Sid, user.Id),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim(JwtRegisteredClaimNames.Name, user.UserName),
+                new Claim(JwtRegisteredClaimNames.Name, user.Name),
             }),
             Expires = DateTime.UtcNow.AddHours(8),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

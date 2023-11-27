@@ -1,20 +1,30 @@
 ﻿using Application.Accounts.Queries;
+using Application.Interfaces;
 using Application.Repositories;
 using Domain.Entities;
+using Domain.Common.Errors;
 using MediatR;
+using ErrorOr;
 
 namespace Application.Accounts.QueryHandlers;
 
-public class GetAllAccountHandler : IRequestHandler<GetAllAccounts, IEnumerable<Account>>
+public class GetAllAccountHandler : IRequestHandler<GetAllAccounts, ErrorOr<List<Account>>>
 {
-    private readonly IAccountRepository _repository;
+    private readonly IAccountRepository _accountRepository;
+    private readonly ICurrentUserService _currentUserService;
 
-    public GetAllAccountHandler(IAccountRepository repository)
+    public GetAllAccountHandler(IAccountRepository repository, ICurrentUserService currentUserService)
     {
-        _repository = repository;
+        _accountRepository = repository;
+        _currentUserService = currentUserService;
     }
-    public Task<IEnumerable<Account>> Handle(GetAllAccounts request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<List<Account>>> Handle(GetAllAccounts request, CancellationToken cancellationToken)
     {
-        return _repository.GetAll(request.UserId);
+        if (request.UserId.ToString() != _currentUserService.UserId)
+        {
+            return Errors.User.Unauthorized;
+        }
+
+        return await _accountRepository.GetAll(request.UserId);
     }
 }

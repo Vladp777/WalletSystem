@@ -9,11 +9,11 @@ namespace Domain.Common.Errors
 {
     public static partial class Errors
     {
-        public static class Account
+        public static class Transaction
         {
-            public static Error AccountNotFound => Error.NotFound(
-            code: "User.AccountNotFound",
-            description: "Account not found.");
+            public static Error WrongTransactionType => Error.Conflict(
+            code: "Transaction.WrongTransactionType",
+            description: "Wrong transaction type");
         }
     }
 }

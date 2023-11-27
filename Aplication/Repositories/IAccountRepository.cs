@@ -9,5 +9,5 @@ namespace Application.Repositories;
 
 public interface IAccountRepository: IBaseRepository<Account>
 {
-
+    Task<Account> NoTrackingGet(Guid id);
 }

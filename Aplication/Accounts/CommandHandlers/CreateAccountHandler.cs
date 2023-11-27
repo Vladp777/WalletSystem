@@ -21,8 +21,8 @@ namespace Application.Accounts.CommandHandlers
         {
             var entity = new Account()
             {
-                Id = new Guid(),
-                UserId = request.ApplicationUserId.ToString(),
+                Id = Guid.NewGuid(),
+                UserId = request.UserId.ToString(),
                 Name = request.Name,
                 Balance = request.Balance
             };

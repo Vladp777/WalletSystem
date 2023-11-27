@@ -1,6 +1,7 @@
 ﻿using Application.Accounts.Commands;
 using Application.Interfaces;
 using Application.Repositories;
+using Domain.Common.Errors;
 using Domain.Entities;
 using ErrorOr;
 using MediatR;
@@ -19,7 +20,18 @@ public class DeleteAccountHandler : IRequestHandler<DeleteAccount, ErrorOr<Accou
     }
     public async Task<ErrorOr<Account>> Handle(DeleteAccount request, CancellationToken cancellationToken)
     {
-        var accountToDelete = 
+        var accountToDelete = await _accountRepository.NoTrackingGet(request.Id);
+
+        if (accountToDelete == null)
+        {
+            return Errors.Account.AccountNotFound;
+        }
+
+        if (accountToDelete.UserId != _currentUserService.UserId)
+        {
+            return Errors.User.Unauthorized;
+        }
+
         return await _accountRepository.Delete(request.Id);
     }
 }

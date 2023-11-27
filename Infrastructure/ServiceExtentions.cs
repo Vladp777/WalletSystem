@@ -25,6 +25,8 @@ namespace Infrastructure
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<ITransactionRepository, TransactionRepository>();
+
             services.AddScoped<IIdentityService, IdentityService>();
 
             var jwtSettings = new JwtSettings
