@@ -1,6 +1,7 @@
 ﻿using Application.Authentication.Queries;
 using Application.Interfaces;
 using Application.Models;
+using ErrorOr;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Application.Authentication.QueryHandlers
 {
-    internal class LoginUserHandler : IRequestHandler<LoginUserQuery, AuthenticationResult>
+    internal class LoginUserHandler : IRequestHandler<LoginUserQuery, ErrorOr<AuthenticationResult>>
     {
         private readonly IIdentityService _identityService;
 
@@ -18,9 +19,9 @@ namespace Application.Authentication.QueryHandlers
         {
             _identityService = identityService;
         }
-        public Task<AuthenticationResult> Handle(LoginUserQuery request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<AuthenticationResult>> Handle(LoginUserQuery request, CancellationToken cancellationToken)
         {
-            return  _identityService.LoginUser(request.Email, request.Password);
+            return await _identityService.LoginUser(request.Email, request.Password);
         }
     }
 }

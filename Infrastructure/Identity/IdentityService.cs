@@ -9,6 +9,8 @@ using System.Text;
 using Infrastructure.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
+using ErrorOr;
+using Domain.Common.Errors;
 
 namespace Infrastructure.Identity;
 
@@ -23,66 +25,49 @@ public class IdentityService: IIdentityService
         _jwtSettings = jwtSettings;
     }
 
-    public async Task<AuthenticationResult> RegisterUser(string email, string userName, string password)
+    public async Task<ErrorOr<AuthenticationResult>> RegisterUser(string email, string Name, string password)
     {
         var existingUser = await _userManager.FindByEmailAsync(email);
 
         if (existingUser != null)
         {
-            return new AuthenticationResult(
-                IdentityResult.Failed(
-                    new IdentityError
-                    {
-                        Code = "Conflict",
-                        Description = "Email is already in use"
-                    })
-                );
+            return Errors.User.DuplicateEmail;
         }
 
         var newUser = new ApplicationUser
         {
             Email = email,
-            Name = userName
+            UserName = email,
+            Name = Name
         };
 
         var createdUser = await _userManager.CreateAsync(newUser, password);
 
         if (!createdUser.Succeeded)
         {
-            return new AuthenticationResult(createdUser);
+
+            return ErrorOr<AuthenticationResult>.From(
+                createdUser.Errors.Select(e => 
+                    Error.Custom(3, e.Code, e.Description)).ToList());
         }
 
         return GenerateAuthResultWithToken(newUser);
     }
 
-    public async Task<AuthenticationResult> LoginUser(string email, string password)
+    public async Task<ErrorOr<AuthenticationResult>> LoginUser(string email, string password)
     {
         var user = await _userManager.FindByEmailAsync(email);
 
         if (user == null)
         {
-            return new AuthenticationResult(
-                IdentityResult.Failed(
-                    new IdentityError
-                    {
-                        Code = "Unauthorized",
-                        Description = "Invalid email or password"
-                    })
-                );
+            return Errors.User.InvalidEmailOrPassword;
         }
 
         var isUserHasValidPassword = await _userManager.CheckPasswordAsync(user, password);
 
         if (!isUserHasValidPassword)
         {
-            return new AuthenticationResult(
-                    IdentityResult.Failed(
-                    new IdentityError
-                    {
-                        Code = "Unauthorized",
-                        Description = "Invalid email or password"
-                    })
-                );
+            return Errors.User.InvalidEmailOrPassword;
         }
 
         return GenerateAuthResultWithToken(user);
@@ -99,7 +84,7 @@ public class IdentityService: IIdentityService
                 new Claim(JwtRegisteredClaimNames.Sid, user.Id),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim(JwtRegisteredClaimNames.Name, user.UserName),
+                new Claim(JwtRegisteredClaimNames.Name, user.Name),
             }),
             Expires = DateTime.UtcNow.AddHours(8),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

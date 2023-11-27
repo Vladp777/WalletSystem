@@ -1,11 +1,12 @@
 ﻿using Application.Accounts.Commands;
 using Application.Repositories;
 using Domain.Entities;
+using ErrorOr;
 using MediatR;
 
 namespace Application.Accounts.CommandHandlers
 {
-    public class CreateAccountHandler : IRequestHandler<CreateAccount, Account>
+    public class CreateAccountHandler : IRequestHandler<CreateAccount, ErrorOr<Account>>
     {
         private readonly IAccountRepository _context;
         private readonly IUnitOfWork _unitOfWork;
@@ -16,12 +17,12 @@ namespace Application.Accounts.CommandHandlers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Account> Handle(CreateAccount request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<Account>> Handle(CreateAccount request, CancellationToken cancellationToken)
         {
             var entity = new Account()
             {
-                Id = new Guid(),
-                UserId = request.ApplicationUserId.ToString(),
+                Id = Guid.NewGuid(),
+                UserId = request.UserId.ToString(),
                 Name = request.Name,
                 Balance = request.Balance
             };

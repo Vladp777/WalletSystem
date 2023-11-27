@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
+using ErrorOr;
 using MediatR;
 
 namespace Application.Accounts.Queries;
 
-public record GetAccountById(Guid Id): IRequest<Account>;
+public record GetAccountById(Guid Id): IRequest<ErrorOr<Account>>;

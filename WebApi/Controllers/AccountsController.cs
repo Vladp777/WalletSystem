@@ -3,15 +3,15 @@ using MediatR;
 using Application.Accounts.Queries;
 using Application.Accounts.Commands;
 using Microsoft.AspNetCore.Authorization;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebApi.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
 [Authorize]
-public class AccountsController : ControllerBase
+[Route("api/[controller]")]
+public class AccountsController : ApiController
 {
     private readonly ISender _mediatr;
 
@@ -26,11 +26,10 @@ public class AccountsController : ControllerBase
         var request = new GetAllAccounts(userId);
 
         var result = await _mediatr.Send(request);
-        if (result == null)
-        {
-            return NoContent();
-        }
-        return Ok(result);
+
+        return result.Match(
+                result => Ok(result),
+                errors => Problem(errors));
     }
 
     [HttpGet("{id}")]
@@ -39,11 +38,10 @@ public class AccountsController : ControllerBase
         var request = new GetAccountById(id);
 
         var result = await _mediatr.Send(request);
-        if (result == null)
-        {
-            return NoContent();
-        }
-        return Ok(result);
+
+        return result.Match(
+                result => Ok(result),
+                errors => Problem(errors));
     }
 
     // POST api/<AccountsController>
@@ -52,23 +50,29 @@ public class AccountsController : ControllerBase
     {
         var result = await _mediatr.Send(command);
 
-        if (result == null)
-        {
-            return BadRequest();
-        }
-
-        return Created($"api/accounts/{result.Id}", result);
+        return result.Match(
+                result => Created($"api/accounts/{result.Id}", result),
+                errors => Problem(errors));
     }
 
-    // PUT api/<AccountsController>/5
-    [HttpPut("{id}")]
-    public void Put(int id, [FromBody] string value)
+    [HttpPut]
+    public async Task<IActionResult> Put([FromBody] UpdateAccount command)
     {
+        var result = await _mediatr.Send(command);
+
+        return result.Match(
+                result => Ok(result),
+                errors => Problem(errors));
     }
 
-    // DELETE api/<AccountsController>/5
     [HttpDelete("{id}")]
-    public void Delete(int id)
+    public async Task<IActionResult> Delete(Guid id)
     {
+        var command = new DeleteAccount(id);
+        var result = await _mediatr.Send(command);
+
+        return result.Match(
+                result => Ok(result),
+                errors => Problem(errors));
     }
 }

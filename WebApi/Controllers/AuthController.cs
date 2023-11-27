@@ -2,15 +2,14 @@
 using Application.Authentication.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Models;
+
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
-    public class AuthController : ControllerBase
+    public class AuthController : ApiController
     {
         private readonly ISender _mediatr;
 
@@ -24,19 +23,9 @@ namespace WebApi.Controllers
         {
             var result = await _mediatr.Send(command);
 
-            if (!result.Succeeded)
-            {
-                return BadRequest(new AuthFailResponse
-                {
-                    Errors = result.Errors
-                });
-            }
-
-            return Ok(new AuthSuccesResponse
-            {
-                Id = result.UserId,
-                Token = result.Token
-            });
+            return result.Match(
+                result => Ok(result),
+                errors => Problem(errors));
         }
 
         [HttpPost("login")]
@@ -44,19 +33,9 @@ namespace WebApi.Controllers
         {
             var result = await _mediatr.Send(query);
 
-            if (!result.Succeeded)
-            {
-                return BadRequest(new AuthFailResponse
-                {
-                    Errors = result.Errors
-                });
-            }
-
-            return Ok(new AuthSuccesResponse
-            {
-                Id = result.UserId,
-                Token = result.Token
-            });
+            return result.Match(
+             result => Ok(result),
+             errors => Problem(errors));
         }
     }
 }
