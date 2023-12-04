@@ -3,7 +3,6 @@ using Application.Repositories;
 using Application.Transactions.Commands;
 using Domain.Common.Errors;
 using Domain.Entities;
-using Domain.Common.Errors;
 
 using ErrorOr;
 using MediatR;
@@ -42,18 +41,14 @@ public class CreateTransactionHandler : IRequestHandler<CreateTransaction, Error
         }
 
         double resultBalance;
-        //TransactionType type;
+
         if (request.TypeId == TransactionType.Income.Id)
         {
             resultBalance = account.Balance + request.Count;
-            //type = TransactionType.Income;
-            account.Balance = resultBalance;
         }
         else if (request.TypeId == TransactionType.Expence.Id)
         {
             resultBalance = account.Balance - request.Count;
-            //type= TransactionType.Expence;
-            account.Balance = resultBalance;
         }
         else
         {
@@ -63,17 +58,18 @@ public class CreateTransactionHandler : IRequestHandler<CreateTransaction, Error
         var transaction = new Transaction
         {
             Id = Guid.NewGuid(),
-            //Account = account,
             AccountId = request.AccountId,
             TypeId = request.TypeId,
             Description = request.Description,
             Count = request.Count,
             DateTime = request.DateTime,
-            Result_Balance = resultBalance,
+            //Result_Balance = resultBalance,
             TagId = request.TagId
         };
 
         var result = await _transactionRepository.Create(transaction);
+
+        account.Balance = resultBalance;
 
         await _unitOfWork.SaveAsync();
 

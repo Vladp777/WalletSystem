@@ -4,23 +4,6 @@ namespace Domain.Entities;
 
 public class TransactionType
 {
-    //private readonly static Lazy<TransactionType> _income = 
-    //    new Lazy<TransactionType>(() => 
-    //            new TransactionType 
-    //            { 
-    //                Id = 1, 
-    //                Type = "Income" 
-    //            });
-
-    //private readonly static Lazy<TransactionType> _expence = 
-    //    new Lazy<TransactionType>(() => 
-    //            new TransactionType
-    //            {
-    //                Id = 2,
-    //                Type = "Expence"
-    //            });
-
-
     public int Id { get; set; }
     public string Type { get; set; } = null!;
 

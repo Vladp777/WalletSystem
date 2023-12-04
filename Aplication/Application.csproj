@@ -16,9 +16,4 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Transactions\QueryHandlers\" />
-    <Folder Include="Transactions\Queries\" />
-  </ItemGroup>
-
 </Project>

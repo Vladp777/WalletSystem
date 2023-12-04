@@ -15,25 +15,8 @@ builder.Services
     .ConfigureApplication()
     .ConfigureWebApi();
 
-
-
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen(x =>
-//{
-//    var security = new Dictionary<string, IEnumerable<string>>
-//    {
-//        {"Bearer", new string[0] }
-//    };
-//    x.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-//    {
-//        Description = "JWT Authrization header using the bearer scheme",
-//        Name = "Authorization",
-//        In = ParameterLocation.Header,
-//        Type = SecuritySchemeType.ApiKey
-//    });
-//    //x.AddSecurityRequirement(security);
-//});
 
 builder.Services.AddSwaggerGen(option =>
 {
@@ -62,8 +45,6 @@ builder.Services.AddSwaggerGen(option =>
         }
     });
 });
-//builder.Services.AddAuthentication();
-
 
 var app = builder.Build();
 
@@ -79,7 +60,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
 
 app.MapControllers();
 

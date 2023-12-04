@@ -1,5 +1,6 @@
 ﻿using Application.Repositories;
 using Domain.Entities;
+using IdentityModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
@@ -34,14 +35,14 @@ public class AccountRepository : IAccountRepository
         return deleted;
     }
 
-    public Task<Account> Get(Guid id)
+    public Task<Account?> Get(Guid id)
     {
         var result = _context.Accounts
             .Include(a => a.Transactions)
                 .ThenInclude(t => t.Tag)
             .Include(a => a.Transactions)
                 .ThenInclude(t => t.Type)
-            .First(x => x.Id == id);
+            .FirstOrDefault(x => x.Id == id);
 
         return Task.FromResult(result);
     }
@@ -74,5 +75,23 @@ public class AccountRepository : IAccountRepository
         await _unitOfWork.SaveAsync();
 
         return updatedEntity;
+    }
+
+    public async Task<double> UpdateBalance(Guid id, double transactionCount, int typeId)
+    {
+        var updatedEntity = _context.Accounts.First(x => x.Id == id);
+
+        if(typeId == TransactionType.Income.Id)
+        {
+            updatedEntity.Balance += transactionCount;
+        }
+        else if(typeId == TransactionType.Expence.Id)
+        {
+            updatedEntity.Balance -= transactionCount;
+        }
+
+        await _unitOfWork.SaveAsync();
+
+        return updatedEntity.Balance;
     }
 }

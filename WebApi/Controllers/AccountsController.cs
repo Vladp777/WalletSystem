@@ -44,7 +44,6 @@ public class AccountsController : ApiController
                 errors => Problem(errors));
     }
 
-    // POST api/<AccountsController>
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateAccount command)
     {

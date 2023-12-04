@@ -14,6 +14,10 @@ namespace Domain.Common.Errors
             public static Error WrongTransactionType => Error.Conflict(
             code: "Transaction.WrongTransactionType",
             description: "Wrong transaction type");
+
+            public static Error TransactionNotFound => Error.NotFound(
+            code: "User.TransactionNotFound",
+            description: "Transaction not found.");
         }
     }
 }
