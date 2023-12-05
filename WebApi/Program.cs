@@ -44,7 +44,9 @@ builder.Services.AddSwaggerGen(option =>
             new string[]{}
         }
     });
-});
+    option.UseDateOnlyTimeOnlyStringConverters();
+}
+);
 
 var app = builder.Build();
 

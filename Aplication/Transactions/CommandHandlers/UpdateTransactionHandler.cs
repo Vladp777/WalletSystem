@@ -47,6 +47,13 @@ public class UpdateTransactionHandler : IRequestHandler<UpdateTransaction, Error
             return Errors.User.Unauthorized;
         }
 
+        var transactionsTags = await _transactionRepository.GetTransactionTags();
+
+        if (!(transactionsTags.Any(t => t.Id == request.TagId)))
+        {
+            return Errors.Transaction.WrongTransactionTag;
+        }
+
         var updated = new Transaction
         {
             Id = request.Id,

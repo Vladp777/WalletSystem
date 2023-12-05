@@ -13,7 +13,7 @@ public class Transaction: BaseEntity
     public string Description { get; set; }
     public double Count {  get; set; }
     public DateTime DateTime { get; set; }
-    //public double Result_Balance {  get; set; }
+    public double Result_Balance {  get; set; }
     public int TagId {  get; set; }
     public TransactionTag Tag { get; set; }
 }

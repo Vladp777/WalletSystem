@@ -73,5 +73,15 @@ namespace WebApi.Controllers
                 result => Ok(result),
                 errors => Problem(errors));
         }
-    }
+
+        [HttpPost("transfer")]
+        public async Task<IActionResult> Transfer([FromBody] TransferCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            return result.Match(
+                result => Ok(result),
+                errors => Problem(errors));
+        }
+    } 
 }

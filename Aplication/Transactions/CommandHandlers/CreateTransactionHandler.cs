@@ -55,6 +55,13 @@ public class CreateTransactionHandler : IRequestHandler<CreateTransaction, Error
             return Errors.Transaction.WrongTransactionType;
         }
 
+        var transactionsTags = await _transactionRepository.GetTransactionTags();
+
+        if (!(transactionsTags.Any(t => t.Id == request.TagId)))
+        {
+            return Errors.Transaction.WrongTransactionTag;
+        }
+
         var transaction = new Transaction
         {
             Id = Guid.NewGuid(),
@@ -63,7 +70,7 @@ public class CreateTransactionHandler : IRequestHandler<CreateTransaction, Error
             Description = request.Description,
             Count = request.Count,
             DateTime = request.DateTime,
-            //Result_Balance = resultBalance,
+            Result_Balance = resultBalance,
             TagId = request.TagId
         };
 

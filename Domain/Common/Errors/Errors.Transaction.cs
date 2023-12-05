@@ -12,12 +12,16 @@ namespace Domain.Common.Errors
         public static class Transaction
         {
             public static Error WrongTransactionType => Error.Conflict(
-            code: "Transaction.WrongTransactionType",
-            description: "Wrong transaction type");
+                code: "Transaction.WrongTransactionType",
+                description: "Wrong transaction type");
 
             public static Error TransactionNotFound => Error.NotFound(
-            code: "User.TransactionNotFound",
-            description: "Transaction not found.");
+                code: "User.TransactionNotFound",
+                description: "Transaction not found.");
+
+            public static ErrorOr<Entities.Transaction> WrongTransactionTag => Error.Conflict(
+                code: "Transaction.WrongTransactionTag",
+                description: "Wrong transaction tag");
         }
     }
 }

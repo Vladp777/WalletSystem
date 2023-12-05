@@ -32,7 +32,7 @@ namespace Application.Transactions.CommandHandlers
 
             if (transaction == null)
             {
-                return Errors.Account.AccountNotFound;
+                return Errors.Transaction.TransactionNotFound;
             }
 
             var account = await _accountRepository.Get(transaction.AccountId);
@@ -47,7 +47,7 @@ namespace Application.Transactions.CommandHandlers
                 return Errors.User.Unauthorized;
             }
 
-            var result = await _transactionRepository.Delete(transaction.AccountId);
+            var result = await _transactionRepository.Delete(transaction.Id);
 
             if(transaction.TypeId == TransactionType.Income.Id)
             {

@@ -15,9 +15,10 @@ namespace Infrastructure
             
         }
 
-        //public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Account> Accounts { get; set; }
+        public DbSet<TransactionTag> TransactionTags { get; set; }
+        public DbSet<TransactionType> TransactionTypes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

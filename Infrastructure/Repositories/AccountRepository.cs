@@ -77,21 +77,21 @@ public class AccountRepository : IAccountRepository
         return updatedEntity;
     }
 
-    public async Task<double> UpdateBalance(Guid id, double transactionCount, int typeId)
-    {
-        var updatedEntity = _context.Accounts.First(x => x.Id == id);
+    //public async Task<double> UpdateBalance(Guid id, double transactionCount, int typeId)
+    //{
+    //    var updatedEntity = _context.Accounts.First(x => x.Id == id);
 
-        if(typeId == TransactionType.Income.Id)
-        {
-            updatedEntity.Balance += transactionCount;
-        }
-        else if(typeId == TransactionType.Expence.Id)
-        {
-            updatedEntity.Balance -= transactionCount;
-        }
+    //    if(typeId == TransactionType.Income.Id)
+    //    {
+    //        updatedEntity.Balance += transactionCount;
+    //    }
+    //    else if(typeId == TransactionType.Expence.Id)
+    //    {
+    //        updatedEntity.Balance -= transactionCount;
+    //    }
 
-        await _unitOfWork.SaveAsync();
+    //    await _unitOfWork.SaveAsync();
 
-        return updatedEntity.Balance;
-    }
+    //    return updatedEntity.Balance;
+    //}
 }
