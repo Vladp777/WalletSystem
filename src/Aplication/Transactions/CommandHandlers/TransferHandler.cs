@@ -42,6 +42,9 @@ public class TransferHandler : IRequestHandler<TransferCommand, ErrorOr<Transact
             return Errors.User.Unauthorized;
         }
 
+        fromAccount.Balance -= request.Count;
+        toAccount.Balance += request.Count;
+
         var fromTransaction = new Transaction
         {
             Id = Guid.NewGuid(),
@@ -50,6 +53,7 @@ public class TransferHandler : IRequestHandler<TransferCommand, ErrorOr<Transact
             Description = $"Transfer to '{toAccount.Name}' account",
             Count = request.Count,
             DateTime = DateTime.Now,
+            Result_Balance = fromAccount.Balance,
             TagId = TransactionTag.Transfer.Id
         };
 
@@ -61,6 +65,7 @@ public class TransferHandler : IRequestHandler<TransferCommand, ErrorOr<Transact
             Description = $"Transfer from '{fromAccount.Name}' account",
             Count = request.Count,
             DateTime = DateTime.Now,
+            Result_Balance = toAccount.Balance,
             TagId = TransactionTag.Transfer.Id
         };
 

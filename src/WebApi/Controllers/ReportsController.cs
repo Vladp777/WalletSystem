@@ -25,7 +25,7 @@ namespace WebApi.Controllers
                 toDate = DateOnly.FromDateTime(DateTime.Now);
             }
 
-            var query = new GetReportByTypeAndTag(accountId, typeId, TransactionTag.Transfer.Id, fromDate, toDate);
+            var query = new GetReportByType(accountId, typeId, fromDate, toDate);
             var result = await _mediator.Send(query);
 
             return result.Match(
