@@ -21,7 +21,7 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, ErrorOr<Auth
         _identityService = identityService;
     }
 
-    async Task<ErrorOr<AuthenticationResult>> IRequestHandler<CreateUserCommand, ErrorOr<AuthenticationResult>>.Handle(CreateUserCommand request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<AuthenticationResult>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
         var response = await _identityService.RegisterUser(request.Email, request.Name, request.Password);
 

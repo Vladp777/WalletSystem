@@ -9,7 +9,7 @@ using MediatR;
 
 namespace Application.Transactions.CommandHandlers
 {
-    internal class DeleteTransactionHandler : IRequestHandler<DeleteTransaction, ErrorOr<Transaction>>
+    public class DeleteTransactionHandler : IRequestHandler<DeleteTransaction, ErrorOr<Transaction>>
     {
         private readonly IAccountRepository _accountRepository;
         private readonly ITransactionRepository _transactionRepository;

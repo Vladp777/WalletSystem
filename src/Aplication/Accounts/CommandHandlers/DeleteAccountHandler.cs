@@ -20,7 +20,7 @@ public class DeleteAccountHandler : IRequestHandler<DeleteAccount, ErrorOr<Accou
     }
     public async Task<ErrorOr<Account>> Handle(DeleteAccount request, CancellationToken cancellationToken)
     {
-        var accountToDelete = await _accountRepository.NoTrackingGet(request.Id);
+        var accountToDelete = await _accountRepository.Get(request.Id);
 
         if (accountToDelete == null)
         {

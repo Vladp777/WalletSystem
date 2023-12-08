@@ -22,7 +22,7 @@ public class UpdateAccountHandler : IRequestHandler<UpdateAccount, ErrorOr<Accou
     }
     public async Task<ErrorOr<Account>> Handle(UpdateAccount request, CancellationToken cancellationToken)
     {
-        var accountToUpdate = await _accountRepository.NoTrackingGet(request.Id);
+        var accountToUpdate = await _accountRepository.Get(request.Id);
 
         if (accountToUpdate == null)
         {

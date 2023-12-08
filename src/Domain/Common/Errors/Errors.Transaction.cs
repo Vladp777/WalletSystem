@@ -19,7 +19,7 @@ namespace Domain.Common.Errors
                 code: "User.TransactionNotFound",
                 description: "Transaction not found.");
 
-            public static ErrorOr<Entities.Transaction> WrongTransactionTag => Error.Conflict(
+            public static Error WrongTransactionTag => Error.Conflict(
                 code: "Transaction.WrongTransactionTag",
                 description: "Wrong transaction tag");
         }

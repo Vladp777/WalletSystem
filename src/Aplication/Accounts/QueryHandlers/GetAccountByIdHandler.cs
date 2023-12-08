@@ -20,7 +20,7 @@ public class GetAccountByIdHandler : IRequestHandler<GetAccountById, ErrorOr<Acc
     }
     public async Task<ErrorOr<Account>> Handle(GetAccountById request, CancellationToken cancellationToken)
     {
-        var accountToGet = await _accountRepository.NoTrackingGet(request.Id);
+        var accountToGet = await _accountRepository.Get(request.Id);
 
         if (accountToGet == null)
         {
@@ -32,6 +32,6 @@ public class GetAccountByIdHandler : IRequestHandler<GetAccountById, ErrorOr<Acc
             return Errors.User.Unauthorized;
         }
 
-        return await _accountRepository.Get(request.Id);
+        return accountToGet;
     }
 }

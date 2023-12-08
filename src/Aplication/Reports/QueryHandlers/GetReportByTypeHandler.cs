@@ -36,7 +36,7 @@ public class GetReportByTypeHandler : IRequestHandler<GetReportByType, ErrorOr<R
         {
             return Errors.User.Unauthorized;
         }
-
+        
         var transactions = await _transactionRepository.GetTransactionsByTypeAndPeriodDate(request.AccountId,
             request.TypeId,
             request.FromDate,

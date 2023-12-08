@@ -32,7 +32,7 @@ public class UpdateTransactionHandler : IRequestHandler<UpdateTransaction, Error
 
         if (transaction == null)
         {
-            return Errors.Account.AccountNotFound;
+            return Errors.Transaction.TransactionNotFound;
         }
 
         var account = await _accountRepository.Get(transaction.AccountId);
@@ -57,7 +57,6 @@ public class UpdateTransactionHandler : IRequestHandler<UpdateTransaction, Error
         var updated = new Transaction
         {
             Id = request.Id,
-            AccountId = account.Id,
             Count = request.Count,
             DateTime = request.DateTime,
             Description = request.Description,
