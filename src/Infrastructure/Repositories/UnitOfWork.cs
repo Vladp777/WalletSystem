@@ -13,11 +13,6 @@ public class UnitOfWork : IUnitOfWork
         _context = context;
     }
 
-    public void Dispose()
-    {
-        _context.Dispose();
-    }
-
     public Task SaveAsync()
     {
         return _context.SaveChangesAsync();

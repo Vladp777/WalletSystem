@@ -8,31 +8,25 @@ namespace Infrastructure.Repositories;
 public class AccountRepository : IAccountRepository
 {
     private readonly ApplicationDbContext _context;
-    private readonly IUnitOfWork _unitOfWork;
-
-    public AccountRepository(ApplicationDbContext context, IUnitOfWork unitOfWork)
+    
+    public AccountRepository(ApplicationDbContext context)
     {
         _context = context;
-        _unitOfWork = unitOfWork;
     }
-    public async Task<Account> Create(Account entity)
+    public Task<Account> Create(Account entity)
     {
         _context.Accounts.Add(entity);
 
-        await _unitOfWork.SaveAsync();
-
-        return entity;
+        return Task.FromResult(entity);
     }
 
-    public async Task<Account> Delete(Guid Id)
+    public Task<Account> Delete(Guid Id)
     {
         var deleted = _context.Accounts.First(x => x.Id == Id);
 
         _context.Accounts.Remove(deleted);
 
-        await _unitOfWork.SaveAsync();
-
-        return deleted;
+        return Task.FromResult(deleted);
     }
 
     public Task<Account?> Get(Guid id)
@@ -57,12 +51,6 @@ public class AccountRepository : IAccountRepository
         return Task.FromResult(results);
     }
 
-    public Task<Account> NoTrackingGet(Guid id)
-    {
-        var result = _context.Accounts.AsNoTracking().First(x => x.Id == id);
-
-        return Task.FromResult(result);
-    }
 
     public async Task<Account> Update(Account entity)
     {
@@ -72,26 +60,6 @@ public class AccountRepository : IAccountRepository
 
         updatedEntity.Name = entity.Name;
 
-        await _unitOfWork.SaveAsync();
-
         return updatedEntity;
     }
-
-    //public async Task<double> UpdateBalance(Guid id, double transactionCount, int typeId)
-    //{
-    //    var updatedEntity = _context.Accounts.First(x => x.Id == id);
-
-    //    if(typeId == TransactionType.Income.Id)
-    //    {
-    //        updatedEntity.Balance += transactionCount;
-    //    }
-    //    else if(typeId == TransactionType.Expence.Id)
-    //    {
-    //        updatedEntity.Balance -= transactionCount;
-    //    }
-
-    //    await _unitOfWork.SaveAsync();
-
-    //    return updatedEntity.Balance;
-    //}
 }

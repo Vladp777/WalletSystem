@@ -1,45 +1,36 @@
 ﻿using Application.Repositories;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Infrastructure.Repositories;
 
 public class TransactionRepository : ITransactionRepository
 {
     private readonly ApplicationDbContext _context;
-    private readonly IUnitOfWork _unitOfWork;
 
-    public TransactionRepository(ApplicationDbContext context, IUnitOfWork unitOfWork)
+    public TransactionRepository(ApplicationDbContext context)
     {
         _context = context;
-        _unitOfWork = unitOfWork;
     }
 
-    public async Task<Transaction> Create(Transaction entity)
+    public Task<Transaction> Create(Transaction entity)
     {
-        var result = _context.Transactions.Add(entity);
+        _context.Transactions.Add(entity);
 
-        await _unitOfWork.SaveAsync();
-
-        return result.Entity;
+        return Task.FromResult(entity);
     }
 
-    public async Task<Transaction> Delete(Guid Id)
+    public Task<Transaction> Delete(Guid Id)
     {
         var deleted = _context.Transactions.First(x => x.Id == Id);
 
         _context.Transactions.Remove(deleted);
 
-        await _unitOfWork.SaveAsync();
-
-        return deleted;
+        return Task.FromResult(deleted);
     }
     public Task<Transaction?> Get(Guid id)
     {
         var transaction = _context.Transactions
-            .Include(t => t.Tag)
-            .Include(t => t.Type)
             .FirstOrDefault(x => x.Id == id);
 
         return Task.FromResult(transaction);
@@ -56,11 +47,6 @@ public class TransactionRepository : ITransactionRepository
         return Task.FromResult(transactions);
     }
 
-    //public Task<IEnumerable<Transaction>> GetTransactionsByTag(Guid accountId, TransactionTag tag)
-    //{
-    //    throw new NotImplementedException();
-    //}
-
     public Task<List<Transaction>> GetTransactionsByTypeAndPeriodDate(Guid accountId, int typeId, DateOnly fromDate, DateOnly toDate)
     {
         var transactions = _context.Transactions
@@ -70,19 +56,6 @@ public class TransactionRepository : ITransactionRepository
             .Where(t => t.TypeId == typeId)
             .Where(t => t.DateTime >= fromDate.ToDateTime(TimeOnly.MinValue)
                             && t.DateTime <= toDate.ToDateTime(TimeOnly.MaxValue))
-            .ToList();
-
-        return Task.FromResult(transactions);
-    }
-
-    public Task<List<Transaction>> GetTransactionsByTypeAndTag(Guid accountId, int typeId, int tagId)
-    {
-        var transactions = _context.Transactions
-            .Include(t => t.Tag)
-            .Include(t => t.Type)
-            .Where(t => t.AccountId == accountId)
-            .Where(t => t.TypeId == typeId 
-                            && t.TagId == tagId)
             .ToList();
 
         return Task.FromResult(transactions);
@@ -109,12 +82,20 @@ public class TransactionRepository : ITransactionRepository
         return Task.FromResult(transactions);
     }
 
-    public async Task<Transaction> Update(Transaction entity)
+    public Task<Transaction> Update(Transaction entity)
     {
-        var result = _context.Transactions.Update(entity);
+        var trans = _context.Transactions.First(x => x.Id == entity.Id);
+        if (trans == null)
+            return null;
 
-        await _unitOfWork.SaveAsync();
+        trans.Result_Balance = entity.Result_Balance;
+        trans.Description = entity.Description;
+        trans.TagId = entity.TagId;
+        trans.DateTime = entity.DateTime;
+        trans.Count = entity.Count;
 
-        return result.Entity;
+        var result = _context.Transactions.Update(trans);
+
+        return Task.FromResult(trans);
     }
 }

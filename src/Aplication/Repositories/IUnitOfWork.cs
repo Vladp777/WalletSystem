@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.Repositories;
 
-public interface IUnitOfWork: IDisposable
+public interface IUnitOfWork
 {
     Task SaveAsync();
 }

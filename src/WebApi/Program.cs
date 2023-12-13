@@ -45,11 +45,10 @@ builder.Services.AddSwaggerGen(option =>
         }
     });
     option.UseDateOnlyTimeOnlyStringConverters();
-}
-);
+});
 
 var app = builder.Build();
-
+app.ApplyMigration();
 app.UseAuthentication();
 
 // Configure the HTTP request pipeline.
@@ -66,3 +65,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+
+public partial class Program { }

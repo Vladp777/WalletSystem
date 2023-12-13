@@ -1,6 +1,6 @@
-namespace Application.UnitTests
+namespace Infrastructure.UnitTests
 {
-    public class Accounts
+    public class UnitTest1
     {
         [Fact]
         public void Test1()

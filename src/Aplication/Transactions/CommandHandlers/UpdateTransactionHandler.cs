@@ -63,7 +63,6 @@ public class UpdateTransactionHandler : IRequestHandler<UpdateTransaction, Error
             TagId = request.TagId,
         };
 
-        var result = await _transactionRepository.Update(updated);
 
         if (transaction.TypeId == TransactionType.Income.Id)
         {
@@ -78,6 +77,10 @@ public class UpdateTransactionHandler : IRequestHandler<UpdateTransaction, Error
             account.Balance -= updated.Count;
 
         }
+
+        updated.Result_Balance = account.Balance;
+        var result = await _transactionRepository.Update(updated);
+
 
         await _unitOfWork.SaveAsync();
 

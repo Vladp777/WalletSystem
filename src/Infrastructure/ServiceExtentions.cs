@@ -5,6 +5,7 @@ using Infrastructure.Identity;
 using Infrastructure.Options;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -51,12 +52,16 @@ namespace Infrastructure
                     };
                 });
 
-            
-
             services.AddAuthorization();
             
-
             return services;
+        }
+
+        public static void ApplyMigration(this IApplicationBuilder app)
+        {
+            using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
+            using var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
+            context?.Database.Migrate();
         }
     }
 }
