@@ -52,7 +52,7 @@ public class AccountRepository : IAccountRepository
     }
 
 
-    public async Task<Account> Update(Account entity)
+    public Task<Account> Update(Account entity)
     {
         var updatedEntity = _context.Accounts.First(x => x.Id == entity.Id);
 
@@ -60,6 +60,6 @@ public class AccountRepository : IAccountRepository
 
         updatedEntity.Name = entity.Name;
 
-        return updatedEntity;
+        return Task.FromResult(updatedEntity);
     }
 }

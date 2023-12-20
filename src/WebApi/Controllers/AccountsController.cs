@@ -3,7 +3,6 @@ using MediatR;
 using Application.Accounts.Queries;
 using Application.Accounts.Commands;
 using Microsoft.AspNetCore.Authorization;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
