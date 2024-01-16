@@ -1,5 +1,4 @@
-﻿using Application.Repositories;
-using Domain.Entities;
+﻿using Domain.Entities;
 using ErrorOr;
 using MediatR;
 

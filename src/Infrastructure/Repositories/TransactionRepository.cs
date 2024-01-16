@@ -42,9 +42,9 @@ public class TransactionRepository : ITransactionRepository
             .Include(t => t.Tag)
             .Include(t => t.Type)
             .Where(t => t.AccountId == id)
-            .ToList();
+            .ToListAsync();
 
-        return Task.FromResult(transactions);
+        return transactions;
     }
 
     public Task<List<Transaction>> GetTransactionsByTypeAndPeriodDate(Guid accountId, int typeId, DateOnly fromDate, DateOnly toDate)

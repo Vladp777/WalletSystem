@@ -1,19 +1,11 @@
 ﻿using Application.Interfaces;
 using Application.Repositories;
-using Application.Transactions.Queries;
-using Application.Transactions.QueryHandlers;
 using DataGenerator;
 using Domain.Entities;
 using Domain.Common.Errors;
 using NSubstitute.ReturnsExtensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Application.Reports.Queries;
 using Application.Reports.QueryHandlers;
-using Application.Models;
 
 namespace Application.UnitTests.Reports.QueryHandlers;
 

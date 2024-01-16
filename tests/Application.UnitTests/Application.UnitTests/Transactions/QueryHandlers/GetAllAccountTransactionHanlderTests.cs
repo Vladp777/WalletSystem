@@ -1,7 +1,5 @@
 ﻿using Application.Interfaces;
 using Application.Repositories;
-using Application.Transactions.CommandHandlers;
-using Application.Transactions.Commands;
 using Application.Transactions.Queries;
 using Application.Transactions.QueryHandlers;
 using Domain.Common.Errors;

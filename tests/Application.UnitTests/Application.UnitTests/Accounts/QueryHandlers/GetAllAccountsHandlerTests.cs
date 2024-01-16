@@ -4,7 +4,6 @@ using Application.Interfaces;
 using Application.Repositories;
 using Domain.Entities;
 using Domain.Common.Errors;
-using NSubstitute.ReturnsExtensions;
 
 namespace Application.UnitTests.Accounts.QueryHandlers;
 

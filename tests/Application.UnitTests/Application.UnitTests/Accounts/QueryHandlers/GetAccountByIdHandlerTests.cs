@@ -1,6 +1,4 @@
-﻿using Application.Accounts.CommandHandlers;
-using Application.Accounts.Commands;
-using Application.Accounts.Queries;
+﻿using Application.Accounts.Queries;
 using Application.Accounts.QueryHandlers;
 using Application.Interfaces;
 using Application.Repositories;
