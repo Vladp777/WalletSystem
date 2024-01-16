@@ -2,11 +2,6 @@
 using Application.Repositories;
 using Application.Accounts.CommandHandlers;
 using Domain.Common.Errors;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Application.Accounts.Commands;
 using NSubstitute.ReturnsExtensions;
 using Domain.Entities;

@@ -5,7 +5,6 @@ using Domain.Common.Errors;
 using NSubstitute.ReturnsExtensions;
 using Application.Transactions.Commands;
 using Application.Transactions.CommandHandlers;
-using ErrorOr;
 
 namespace Application.UnitTests.Transactions.CommandHandlers;
 

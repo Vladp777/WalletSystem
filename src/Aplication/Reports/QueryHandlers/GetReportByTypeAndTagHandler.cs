@@ -3,7 +3,6 @@ using Application.Models;
 using Application.Reports.Queries;
 using Application.Repositories;
 using Domain.Common.Errors;
-using Domain.Entities;
 using ErrorOr;
 using MediatR;
 

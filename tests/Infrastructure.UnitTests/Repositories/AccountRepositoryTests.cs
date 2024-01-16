@@ -4,7 +4,6 @@ using Domain.Entities;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using NSubstitute.Extensions;
 
 namespace Infrastructure.UnitTests.Repositories;
 

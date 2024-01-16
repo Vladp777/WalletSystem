@@ -1,14 +1,8 @@
-﻿using Application.Repositories;
-using DataGenerator;
+﻿using DataGenerator;
 using Domain.Entities;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.UnitTests.Repositories;
 

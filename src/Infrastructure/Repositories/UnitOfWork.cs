@@ -1,6 +1,4 @@
 ﻿using Application.Repositories;
-using Microsoft.EntityFrameworkCore;
-using Infrastructure;
 
 namespace Infrastructure.Repositories;
 

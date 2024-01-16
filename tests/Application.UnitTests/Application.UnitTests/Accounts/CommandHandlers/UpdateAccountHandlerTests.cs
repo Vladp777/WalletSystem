@@ -5,7 +5,6 @@ using Application.Repositories;
 using Domain.Common.Errors;
 using Domain.Entities;
 using NSubstitute.ReturnsExtensions;
-using System.Xml.Linq;
 
 
 namespace Application.UnitTests.Accounts.CommandHandlers;

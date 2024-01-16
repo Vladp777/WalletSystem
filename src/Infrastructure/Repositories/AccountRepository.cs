@@ -1,6 +1,5 @@
 ﻿using Application.Repositories;
 using Domain.Entities;
-using IdentityModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;

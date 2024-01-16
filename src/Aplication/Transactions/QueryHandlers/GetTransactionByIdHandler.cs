@@ -1,5 +1,4 @@
-﻿using Application.Accounts.Queries;
-using Application.Interfaces;
+﻿using Application.Interfaces;
 using Application.Repositories;
 using Application.Transactions.Queries;
 using Domain.Entities;

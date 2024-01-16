@@ -1,6 +1,5 @@
 using Application;
 using Infrastructure;
-using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
 using WebApi;
 

@@ -1,9 +1,7 @@
 ﻿using Application.Interfaces;
-using Azure.Core;
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Application.Models;
-using System.Net;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Infrastructure.Options;
